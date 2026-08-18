@@ -1,0 +1,44 @@
+.zone {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  background: #fafafa;
+}
+
+.zone:hover:not(.disabled) {
+  border-color: #999;
+  background: #f5f5f5;
+}
+
+.zone.dragging {
+  border-color: #333;
+  background: #f0f0f0;
+}
+
+.zone.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.hiddenInput {
+  display: none;
+}
+
+.title {
+  margin: 0 0 0.2rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #444;
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #aaa;
+}

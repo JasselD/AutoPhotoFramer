@@ -1,0 +1,37 @@
+.button {
+  width: 100%;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  color: #fff;
+  background: #222;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.compact {
+  padding: 0.4rem 0.85rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #fff;
+  background: #222;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+
+.button:hover:not(:disabled),
+.compact:hover:not(:disabled) {
+  background: #444;
+}
+
+.button:disabled,
+.compact:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
