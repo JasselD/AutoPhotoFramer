@@ -5,6 +5,7 @@ import styles from './MetadataPanel.module.css';
 
 const FIELD_GROUPS = [
   { label: 'Film Simulation', fields: ['filmName', 'filmSub'] },
+  { label: 'Middle text', fields: ['middleText'] },
   { label: 'Lens', fields: ['lensModel'] },
   { label: 'Exposure', fields: ['focalLength', 'fNumber', 'exposureTime', 'iso'] },
 ];

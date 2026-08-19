@@ -12,6 +12,7 @@ export const FONT_OPTIONS = [
 export const TEXT_SECTIONS = {
   filmTop: { label: 'Film top', defaultFontId: 'inter', defaultSize: 2.2, weight: '600' },
   filmBottom: { label: 'Film bottom', defaultFontId: 'inter', defaultSize: 1.8, weight: 'normal' },
+  middle: { label: 'Middle', defaultFontId: 'inter', defaultSize: 2.2, weight: '600' },
   exposure: { label: 'Exposure', defaultFontId: 'inter', defaultSize: 2.2, weight: '600' },
   lens: { label: 'Lens', defaultFontId: 'inter', defaultSize: 1.8, weight: 'normal' },
 };

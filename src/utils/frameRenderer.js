@@ -71,6 +71,24 @@ function drawTextLine(ctx, text, x, y, style, align) {
   ctx.fillText(text, x, y);
 }
 
+function measureTextWidth(ctx, text, style) {
+  ctx.font = `${style.weight} ${style.fontSize}px ${style.fontFamily}`;
+  setLetterSpacing(ctx, style.letterSpacing);
+  return ctx.measureText(text).width;
+}
+
+function fitTextStyle(ctx, text, style, maxWidth) {
+  const textWidth = measureTextWidth(ctx, text, style);
+  if (!textWidth || textWidth <= maxWidth) return style;
+
+  const scale = Math.max(0.5, maxWidth / textWidth);
+  return {
+    ...style,
+    fontSize: style.fontSize * scale,
+    letterSpacing: style.letterSpacing * scale,
+  };
+}
+
 function drawLeftTextBlock(ctx, topLine, bottomLine, x, barTop, bottomBar, topStyle, bottomStyle) {
   const hasTop = Boolean(topLine);
   const hasBottom = Boolean(bottomLine);
@@ -169,22 +187,43 @@ export function renderFrame(canvas, image, metadata, options = {}) {
 
   const filmTop = trimText(metadata.filmName);
   const filmBottom = trimText(metadata.filmSub);
+  const middleText = trimText(metadata.middleText);
   const exposureLine = trimText(metadata.exposureLine);
   const lensModel = trimText(metadata.lensModel);
 
   const showFilm = presetShowsFilm(preset) && (filmTop || filmBottom);
+  const showMiddle = middleText;
   const showExposure = preset.showExposure && exposureLine;
   const showLens = preset.showLens && lensModel;
 
-  if ((!showFilm && !showExposure && !showLens) || bottomBar <= 0) return canvas;
+  if ((!showFilm && !showMiddle && !showExposure && !showLens) || bottomBar <= 0) return canvas;
 
   const barTop = imageY + imgH;
   const paddingX = sideMargin || imgW * 0.04;
 
   const filmTopStyle = resolveSectionStyle(textStyles, 'filmTop', imgW);
   const filmBottomStyle = resolveSectionStyle(textStyles, 'filmBottom', imgW);
+  const middleStyle = resolveSectionStyle(textStyles, 'middle', imgW);
   const exposureStyle = resolveSectionStyle(textStyles, 'exposure', imgW);
   const lensStyle = resolveSectionStyle(textStyles, 'lens', imgW);
+
+  const textRightX = offsetX + imgW + paddingX;
+  const leftTextWidth = showFilm
+    ? Math.max(
+      measureTextWidth(ctx, filmTop, filmTopStyle),
+      measureTextWidth(ctx, filmBottom, filmBottomStyle),
+    )
+    : 0;
+  const rightTextWidth = Math.max(
+    showExposure ? measureTextWidth(ctx, exposureLine, exposureStyle) : 0,
+    showLens ? measureTextWidth(ctx, lensModel, lensStyle) : 0,
+  );
+  const leftEdge = paddingX + offsetX + leftTextWidth;
+  const rightEdge = showExposure || showLens
+    ? textRightX - rightTextWidth
+    : offsetX + width - paddingX;
+  const middleGap = Math.max(0, rightEdge - leftEdge - imgW * 0.03);
+  const fittedMiddleStyle = fitTextStyle(ctx, middleText, middleStyle, middleGap);
 
   if (showFilm) {
     drawLeftTextBlock(
@@ -199,8 +238,11 @@ export function renderFrame(canvas, image, metadata, options = {}) {
     );
   }
 
+  if (showMiddle) {
+    drawTextLine(ctx, middleText, width / 2, barTop + bottomBar / 2, fittedMiddleStyle, 'center');
+  }
+
   const hasRightBottom = showLens;
-  const textRightX = offsetX + imgW + paddingX;
   const rightGap = exposureStyle.fontSize * 0.18 + imgW * 0.004;
   const textBlockHeight = hasRightBottom ? exposureStyle.fontSize + rightGap + lensStyle.fontSize : exposureStyle.fontSize;
   const textCenterY = barTop + bottomBar / 2;

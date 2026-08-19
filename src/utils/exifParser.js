@@ -144,6 +144,7 @@ function mapExifToMetadata(data) {
     iso: iso ?? '',
     filmName: '',
     filmSub: '',
+    middleText: '',
     exposureLine: buildExposureLine({ focalLength, fNumber, exposureTime, iso }),
   };
 }
@@ -193,6 +194,7 @@ export function createEmptyMetadata() {
     iso: '',
     filmName: '',
     filmSub: '',
+    middleText: '',
     exposureLine: '',
   };
 }
@@ -214,6 +216,7 @@ export function rebuildExposureLine(metadata) {
 export const METADATA_FIELDS = [
   { key: 'filmName', label: 'Simulation Name (top line)', group: 'badge' },
   { key: 'filmSub', label: 'Creator (bottom line)', group: 'badge' },
+  { key: 'middleText', label: 'Middle text', group: 'middle' },
   { key: 'exposureLine', label: 'Exposure line', group: 'exposure', computed: true },
   { key: 'lensModel', label: 'Lens model', group: 'lens' },
   { key: 'focalLength', label: 'Focal length (mm)', group: 'exposure' },
