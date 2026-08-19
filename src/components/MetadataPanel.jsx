@@ -1,6 +1,5 @@
 import { METADATA_FIELDS, rebuildExposureLine } from '../utils/exifParser';
 import { FONT_OPTIONS, TEXT_SECTIONS } from '../utils/textStyles';
-import { formatAspectRatio } from '../utils/borderSettings';
 import AspectRatioSelector from './AspectRatioSelector';
 import styles from './MetadataPanel.module.css';
 
@@ -63,7 +62,7 @@ export default function MetadataPanel({
           <div className={styles.sliderHeader}>
             <span className={styles.sliderLabel}>Border size</span>
             <div className={styles.sliderControls}>
-              <span className={styles.sliderValue}>{borderSettings.borderScale}%</span>
+              <span className={styles.sliderValue}>{Number(borderSettings.borderScale).toFixed(1)}%</span>
               <button
                 type="button"
                 className={styles.resetBtn}
@@ -78,8 +77,8 @@ export default function MetadataPanel({
             type="range"
             className={styles.slider}
             min="0"
-            max="200"
-            step="1"
+            max="400"
+            step="0.5"
             value={borderSettings.borderScale}
             onChange={(e) =>
               onBorderSettingsChange({ ...borderSettings, borderScale: Number(e.target.value) })
