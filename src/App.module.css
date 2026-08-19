@@ -112,7 +112,8 @@
 
 .gallery {
   flex-shrink: 0;
-  display: flex;
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr) 3.5rem 4rem;
   align-items: center;
   gap: 0.5rem;
   min-width: 0;
@@ -181,7 +182,7 @@
 
 .navButton,
 .deleteButton {
-  flex-shrink: 0;
+  width: 100%;
   padding: 0.45rem 0.65rem;
   border: 1px solid #ddd;
   border-radius: 5px;
@@ -229,11 +230,6 @@
   }
 
   .gallery {
-    flex-wrap: wrap;
-  }
-
-  .thumbnails {
-    order: 3;
-    flex-basis: 100%;
+    grid-template-columns: 5.5rem minmax(0, 1fr) 3.5rem 4rem;
   }
 }
