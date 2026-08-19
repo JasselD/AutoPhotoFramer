@@ -45,7 +45,10 @@ export default function DownloadButton({
 
       for (const photo of photos) {
         const exportCanvas = document.createElement('canvas');
-        renderFrame(exportCanvas, photo.image, photo.metadata, renderOptions);
+        renderFrame(exportCanvas, photo.image, photo.metadata, {
+          ...renderOptions,
+          imageTransform: photo.transform,
+        });
         const blob = await canvasToBlob(exportCanvas);
         if (blob) zip.file(createOutputName(photo.file.name, usedNames), blob);
       }

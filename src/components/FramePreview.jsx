@@ -3,7 +3,7 @@ import { renderFrame } from '../utils/frameRenderer';
 import { ensureFontsLoaded } from '../utils/textStyles';
 import styles from './FramePreview.module.css';
 
-export default function FramePreview({ image, metadata, borderPreset, textStyles, borderSettings, onCanvasReady }) {
+export default function FramePreview({ image, metadata, imageTransform, borderPreset, textStyles, borderSettings, onCanvasReady }) {
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -16,6 +16,7 @@ export default function FramePreview({ image, metadata, borderPreset, textStyles
       if (cancelled || !canvasRef.current) return;
 
       const canvas = renderFrame(canvasRef.current, image, metadata, {
+        imageTransform,
         preset: borderPreset,
         textStyles,
         borderSettings,
@@ -26,7 +27,7 @@ export default function FramePreview({ image, metadata, borderPreset, textStyles
     return () => {
       cancelled = true;
     };
-  }, [image, metadata, borderPreset, textStyles, borderSettings, onCanvasReady]);
+  }, [image, metadata, imageTransform, borderPreset, textStyles, borderSettings, onCanvasReady]);
 
   if (!image) {
     return (

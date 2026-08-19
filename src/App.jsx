@@ -37,6 +37,12 @@ async function loadPhoto(file) {
     file,
     image,
     metadata,
+    transform: {
+      rotation: 0,
+      flipHorizontal: false,
+      flipVertical: false,
+      invert: false,
+    },
     previewUrl: URL.createObjectURL(file),
   };
 }
@@ -155,6 +161,7 @@ export default function App() {
           <FramePreview
             image={image}
             metadata={metadata}
+            imageTransform={currentPhoto?.transform}
             borderPreset={borderPreset}
             textStyles={textStyles}
             borderSettings={borderSettings}
@@ -218,6 +225,8 @@ export default function App() {
             onTextStyleChange={setTextStyles}
             borderSettings={borderSettings}
             onBorderSettingsChange={setBorderSettings}
+            imageTransform={currentPhoto?.transform}
+            onImageTransformChange={(nextTransform) => updateCurrentPhoto({ transform: nextTransform })}
           />
         </footer>
       </main>

@@ -89,6 +89,28 @@ function fitTextStyle(ctx, text, style, maxWidth) {
   };
 }
 
+function drawTransformedImage(ctx, image, x, y, width, height, transform = {}) {
+  const rotation = ((transform.rotation ?? 0) % 360 + 360) % 360;
+  const flipX = transform.flipHorizontal ? -1 : 1;
+  const flipY = transform.flipVertical ? -1 : 1;
+  const quarterTurn = rotation === 90 || rotation === 270;
+  const sourceWidth = image.naturalWidth || image.width;
+  const sourceHeight = image.naturalHeight || image.height;
+  const rotatedWidth = quarterTurn ? sourceHeight : sourceWidth;
+  const rotatedHeight = quarterTurn ? sourceWidth : sourceHeight;
+  const scale = Math.min(width / rotatedWidth, height / rotatedHeight);
+  const drawWidth = rotatedWidth * scale;
+  const drawHeight = rotatedHeight * scale;
+
+  ctx.save();
+  ctx.translate(x + width / 2, y + height / 2);
+  ctx.rotate((rotation * Math.PI) / 180);
+  ctx.scale(flipX, flipY);
+  ctx.filter = transform.invert ? 'invert(1)' : 'none';
+  ctx.drawImage(image, -drawWidth / 2, -drawHeight / 2, drawWidth, drawHeight);
+  ctx.restore();
+}
+
 function drawLeftTextBlock(ctx, topLine, bottomLine, x, barTop, bottomBar, topStyle, bottomStyle) {
   const hasTop = Boolean(topLine);
   const hasBottom = Boolean(bottomLine);
@@ -156,7 +178,12 @@ export function computeCanvasDimensions(image, preset, borderSettings = {}) {
 }
 
 export function renderFrame(canvas, image, metadata, options = {}) {
-  const { preset = BORDER_PRESETS.full, textStyles = {}, borderSettings = {} } = options;
+  const {
+    preset = BORDER_PRESETS.full,
+    textStyles = {},
+    borderSettings = {},
+    imageTransform = {},
+  } = options;
 
   if (!image || !canvas) return null;
 
@@ -183,7 +210,7 @@ export function renderFrame(canvas, image, metadata, options = {}) {
   const imageY = topMargin + offsetY;
 
   ctx.imageSmoothingEnabled = false;
-  ctx.drawImage(image, 0, 0, imgW, imgH, imageX, imageY, imgW, imgH);
+  drawTransformedImage(ctx, image, imageX, imageY, imgW, imgH, imageTransform);
 
   const filmTop = trimText(metadata.filmName);
   const filmBottom = trimText(metadata.filmSub);

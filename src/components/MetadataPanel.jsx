@@ -20,7 +20,16 @@ export default function MetadataPanel({
   onTextStyleChange,
   borderSettings,
   onBorderSettingsChange,
+  imageTransform,
+  onImageTransformChange,
 }) {
+  const currentImageTransform = imageTransform || {
+    rotation: 0,
+    flipHorizontal: false,
+    flipVertical: false,
+    invert: false,
+  };
+
   const handleChange = (key, value) => {
     const updated = { ...metadata, [key]: value };
     if (['focalLength', 'fNumber', 'exposureTime', 'iso'].includes(key)) {
@@ -42,6 +51,10 @@ export default function MetadataPanel({
   const fieldMap = Object.fromEntries(
     METADATA_FIELDS.filter((f) => !f.computed).map((f) => [f.key, f.label]),
   );
+
+  const updateImageTransform = (updates) => {
+    onImageTransformChange({ ...currentImageTransform, ...updates });
+  };
 
   return (
     <div className={styles.panel}>
@@ -93,6 +106,30 @@ export default function MetadataPanel({
           aspectRatioAuto={borderSettings.aspectRatioAuto}
           onChange={(updatedSettings) => onBorderSettingsChange({ ...borderSettings, ...updatedSettings })}
         />
+      </div>
+
+      <div className={styles.transformRow}>
+        <span className={styles.sliderLabel}>Image orientation</span>
+        <div className={styles.transformControls}>
+          <button type="button" className={styles.transformBtn} onClick={() => updateImageTransform({ rotation: (currentImageTransform.rotation + 270) % 360 })} title="Rotate image counterclockwise">
+            Rotate left
+          </button>
+          <button type="button" className={styles.transformBtn} onClick={() => updateImageTransform({ rotation: (currentImageTransform.rotation + 90) % 360 })} title="Rotate image clockwise">
+            Rotate right
+          </button>
+          <button type="button" className={`${styles.transformBtn} ${currentImageTransform.flipHorizontal ? styles.transformActive : ''}`} onClick={() => updateImageTransform({ flipHorizontal: !currentImageTransform.flipHorizontal })} title="Flip image horizontally">
+            Flip horizontal
+          </button>
+          <button type="button" className={`${styles.transformBtn} ${currentImageTransform.flipVertical ? styles.transformActive : ''}`} onClick={() => updateImageTransform({ flipVertical: !currentImageTransform.flipVertical })} title="Flip image vertically">
+            Flip vertical
+          </button>
+          <button type="button" className={`${styles.transformBtn} ${currentImageTransform.invert ? styles.transformActive : ''}`} onClick={() => updateImageTransform({ invert: !currentImageTransform.invert })} title="Invert image colors">
+            Invert
+          </button>
+          <button type="button" className={styles.resetBtn} onClick={() => onImageTransformChange({ rotation: 0, flipHorizontal: false, flipVertical: false, invert: false })}>
+            Reset
+          </button>
+        </div>
       </div>
 
       <div className={styles.typography}>
