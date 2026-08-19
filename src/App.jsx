@@ -134,7 +134,14 @@ export default function App() {
           <label htmlFor={FILE_INPUT_ID} className={`${styles.changeBtn} ${loading || photos.length >= MAX_PHOTOS ? styles.changeBtnDisabled : ''}`}>
             {photos.length ? 'Add photos' : 'Upload photos'}
           </label>
-          <DownloadButton canvas={canvas} filename={file?.name} disabled={!canvas} compact />
+          <DownloadButton
+            canvas={canvas}
+            filename={file?.name}
+            photos={photos}
+            renderOptions={{ preset: borderPreset, textStyles, borderSettings }}
+            disabled={!canvas}
+            compact
+          />
         </div>
       </header>
 

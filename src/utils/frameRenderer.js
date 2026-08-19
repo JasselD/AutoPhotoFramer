@@ -219,16 +219,22 @@ export function renderFrame(canvas, image, metadata, options = {}) {
 }
 
 export function downloadCanvas(canvas, filename = 'photoframe.png') {
-  canvas.toBlob(
-    (blob) => {
-      if (!blob) return;
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = filename;
-      link.click();
-      URL.revokeObjectURL(url);
-    },
-    'image/png',
-  );
+  canvasToBlob(canvas).then((blob) => {
+    if (blob) downloadBlob(blob, filename);
+  });
+}
+
+export function canvasToBlob(canvas) {
+  return new Promise((resolve) => {
+    canvas.toBlob(resolve, 'image/png');
+  });
+}
+
+export function downloadBlob(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  link.click();
+  URL.revokeObjectURL(url);
 }
