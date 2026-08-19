@@ -110,6 +110,103 @@
   outline-offset: -2px;
 }
 
+.gallery {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.thumbnails {
+  display: flex;
+  gap: 0.4rem;
+  min-width: 0;
+  overflow-x: auto;
+  padding: 0.15rem 0.1rem;
+  scrollbar-width: thin;
+}
+
+.thumbnail,
+.addTile {
+  position: relative;
+  flex: 0 0 3.25rem;
+  width: 3.25rem;
+  height: 3.25rem;
+  padding: 0;
+  overflow: hidden;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  background: #eee;
+  cursor: pointer;
+}
+
+.thumbnail:hover,
+.addTile:hover {
+  border-color: #999;
+}
+
+.thumbnailActive {
+  border-color: #222;
+}
+
+.thumbnail img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.thumbnail span {
+  position: absolute;
+  right: 0.2rem;
+  bottom: 0.15rem;
+  min-width: 1rem;
+  padding: 0 0.15rem;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.65);
+  color: #fff;
+  font-size: 0.65rem;
+  line-height: 1rem;
+}
+
+.addTile {
+  display: grid;
+  place-items: center;
+  border: 1px dashed #aaa;
+  color: #666;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.navButton,
+.deleteButton {
+  flex-shrink: 0;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background: #fff;
+  color: #444;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.navButton:hover:not(:disabled),
+.deleteButton:hover:not(:disabled) {
+  border-color: #999;
+  background: #fafafa;
+}
+
+.navButton:disabled,
+.deleteButton:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.deleteButton {
+  color: #a33;
+}
+
 .controls {
   flex-shrink: 0;
   padding-top: 0.25rem;
@@ -129,5 +226,14 @@
 @media (max-width: 768px) {
   .tagline {
     display: none;
+  }
+
+  .gallery {
+    flex-wrap: wrap;
+  }
+
+  .thumbnails {
+    order: 3;
+    flex-basis: 100%;
   }
 }
