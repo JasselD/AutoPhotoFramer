@@ -10,10 +10,12 @@ PhotoFramer is a client-side web application that transforms your photos by addi
 
 - **Film-style borders** – Choose from multiple border presets inspired by Fujifilm's iconic aesthetic
 - **EXIF metadata integration** – Automatically extracts and displays camera settings: focal length, aperture, shutter speed, ISO, film name, and lens model
-- **Customizable designs** – Adjust border size (0-200%), aspect ratio, fonts, and text content
+- **Per-photo editing** – Each image keeps its own border size, aspect ratio, typography, text, and orientation settings
+- **Customizable designs** – Adjust border size (0-400%), aspect ratio, fonts, and text content
+- **Image transforms** – Rotate 90 degrees, flip horizontally or vertically, and invert colors
 - **Wide format support** – Works with JPG, PNG, HEIC, WEBP, TIFF, and RAW image formats
 - **Live preview** – See changes in real-time as you adjust settings
-- **Easy export** – Download your framed photos in high-quality PNG format
+- **Flexible export** – Save one framed image as PNG or package multiple framed images into a ZIP file
 - **Drag-and-drop upload** – Simply drag photos onto the app to get started
 - **Privacy-first** – All processing happens locally in your browser; photos never leave your device
 
@@ -31,7 +33,7 @@ Perfect for:
 ### Prerequisites
 
 - Node.js 16+ and npm (or yarn)
-- A modern web browser (Chrome/Edge 90+, Firefox 88+, Safari 15+)
+- A modern web browser (Chrome/Edge recommended; Firefox-based browsers and Safari use their download settings)
 
 ### Installation
 
@@ -55,14 +57,20 @@ Perfect for:
 
 ### Quick Start Workflow
 
-1. **Upload** – Click "Upload photo" or drag an image onto the canvas
+1. **Upload** – Click "Upload photos" or drag images onto the canvas. Up to 50 photos can be loaded.
 2. **Preview** – See your photo with default Fujifilm-style borders and extracted EXIF data
 3. **Customize**:
    - Select a border preset (Full frame, Thin border, Bottom bar, Border only)
-   - Adjust border size with the slider (or use Reset to return to 100%)
+   - Adjust border size from 0% to 400% with the slider (or use Reset to return to 100%)
    - Choose an aspect ratio from presets or enter a custom ratio
    - Edit metadata, fonts, and text sizes as desired
-4. **Download** – Click "Download" to save your framed photo
+   - Rotate, flip, or invert the current image
+   - Switch between thumbnails to edit each photo independently
+4. **Save** – Click "Save as" for one PNG or "Save ZIP as" for all loaded photos
+
+### Saving to a Custom Folder
+
+In Chrome or Edge on `localhost`, the Save buttons open the native file picker so you can choose a filename and folder. Firefox-based browsers such as Zen and Safari do not expose the same file-picker API; enable **Ask where to save files before downloading** in the browser's download settings to choose the destination for the fallback download.
 
 ### Usage Examples
 
@@ -71,7 +79,7 @@ Perfect for:
 1. Upload your JPEG
 2. Select "Full frame" preset
 3. Set aspect ratio to "16:9"
-4. Download
+4. Save as PNG
 ```
 
 **Custom border styling:**
@@ -81,15 +89,15 @@ Perfect for:
 3. Click "Reset" on border size to return to default
 4. Customize aspect ratio to "4:3" for a classic look
 5. Edit the film name and lens information
-6. Adjust typography as needed
-7. Download the result
+6. Adjust typography and image orientation as needed
+7. Save the result
 ```
 
 **Working with RAW files:**
 ```
 1. Upload a CR2 (Canon) or NEF (Nikon) raw file
 2. EXIF data will be automatically extracted
-3. Customize border and export as PNG
+3. Customize the border and export as PNG
 ```
 
 ## Building for Production
