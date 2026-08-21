@@ -34,7 +34,8 @@ export function resolveSectionStyle(textStyles, sectionKey, imgW) {
   const section = TEXT_SECTIONS[sectionKey];
   const style = textStyles?.[sectionKey] ?? {};
   const fontId = style.fontId ?? section.defaultFontId;
-  const sizePct = style.size ?? section.defaultSize;
+  const parsedSize = Number(style.size);
+  const sizePct = Number.isFinite(parsedSize) && parsedSize > 0 ? parsedSize : section.defaultSize;
 
   return {
     fontFamily: getFontFamily(fontId),

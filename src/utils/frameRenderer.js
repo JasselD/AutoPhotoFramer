@@ -227,6 +227,7 @@ export function renderFrame(canvas, image, metadata, options = {}) {
 
   const barTop = imageY + imgH;
   const paddingX = sideMargin || imgW * 0.04;
+  const leftTextX = paddingX + offsetX;
 
   const filmTopStyle = resolveSectionStyle(textStyles, 'filmTop', imgW);
   const filmBottomStyle = resolveSectionStyle(textStyles, 'filmBottom', imgW);
@@ -245,7 +246,7 @@ export function renderFrame(canvas, image, metadata, options = {}) {
     showExposure ? measureTextWidth(ctx, exposureLine, exposureStyle) : 0,
     showLens ? measureTextWidth(ctx, lensModel, lensStyle) : 0,
   );
-  const leftEdge = paddingX + offsetX + leftTextWidth;
+  const leftEdge = leftTextX + leftTextWidth;
   const rightEdge = showExposure || showLens
     ? textRightX - rightTextWidth
     : offsetX + width - paddingX;
@@ -257,7 +258,7 @@ export function renderFrame(canvas, image, metadata, options = {}) {
       ctx,
       filmTop,
       filmBottom,
-      paddingX + offsetX,
+      leftTextX,
       barTop,
       bottomBar,
       filmTopStyle,
@@ -304,6 +305,11 @@ export function downloadBlob(blob, filename) {
   const link = document.createElement('a');
   link.href = url;
   link.download = filename;
+  link.style.display = 'none';
+  document.body.appendChild(link);
   link.click();
-  URL.revokeObjectURL(url);
+  setTimeout(() => {
+    URL.revokeObjectURL(url);
+    link.remove();
+  }, 1000);
 }

@@ -37,6 +37,8 @@ async function loadPhoto(file) {
     file,
     image,
     metadata,
+    borderSettings: createDefaultBorderSettings(),
+    textStyles: createDefaultTextStyles(),
     transform: {
       rotation: 0,
       flipHorizontal: false,
@@ -51,8 +53,6 @@ export default function App() {
   const [photos, setPhotos] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [borderPreset, setBorderPreset] = useState(BORDER_PRESETS.full);
-  const [textStyles, setTextStyles] = useState(createDefaultTextStyles);
-  const [borderSettings, setBorderSettings] = useState(createDefaultBorderSettings);
   const [canvas, setCanvas] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -61,6 +61,8 @@ export default function App() {
   const file = currentPhoto?.file;
   const image = currentPhoto?.image;
   const metadata = currentPhoto?.metadata || createEmptyMetadata();
+  const borderSettings = currentPhoto?.borderSettings || createDefaultBorderSettings();
+  const textStyles = currentPhoto?.textStyles || createDefaultTextStyles();
 
   const handleFileSelect = useCallback(async (selectedFiles) => {
     const files = Array.from(selectedFiles || []).slice(0, MAX_PHOTOS - photos.length);
@@ -222,9 +224,9 @@ export default function App() {
             onPresetChange={setBorderPreset}
             presets={BORDER_PRESETS}
             textStyles={textStyles}
-            onTextStyleChange={setTextStyles}
+            onTextStyleChange={(nextTextStyles) => updateCurrentPhoto({ textStyles: nextTextStyles })}
             borderSettings={borderSettings}
-            onBorderSettingsChange={setBorderSettings}
+            onBorderSettingsChange={(nextBorderSettings) => updateCurrentPhoto({ borderSettings: nextBorderSettings })}
             imageTransform={currentPhoto?.transform}
             onImageTransformChange={(nextTransform) => updateCurrentPhoto({ transform: nextTransform })}
           />

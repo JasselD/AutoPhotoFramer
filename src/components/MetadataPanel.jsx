@@ -43,7 +43,7 @@ export default function MetadataPanel({
       ...textStyles,
       [sectionKey]: {
         ...textStyles[sectionKey],
-        [field]: field === 'size' ? Number(value) : value,
+        [field]: field === 'size' ? (value === '' ? '' : Number(value)) : value,
       },
     });
   };
